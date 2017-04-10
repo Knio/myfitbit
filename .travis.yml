@@ -1,0 +1,27 @@
+language: python
+
+python:
+  - "3.3"
+  - "3.4"
+  - "3.5"
+  - "pypy"
+# disabled for https://github.com/travis-ci/travis-ci/issues/6277
+#  - "pypy3"
+
+# command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
+install:
+    - pip install pytest>=2.7.3 --upgrade
+
+# command to run tests, e.g. python setup.py test
+script:
+    - python setup.py sdist --format=zip
+    - pip install dist/myfitbit*.zip
+    - py.test
+
+after_success:
+    - pip install coveralls coverage
+    - PYTHONPATH=. coverage run --source=myfitbit -m pytest
+    - coverage report
+    - coveralls
+
+sudo: false
