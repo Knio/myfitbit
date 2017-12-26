@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 import argparse
 import configparser
 import getpass
@@ -23,8 +23,20 @@ def main():
     f = Fitbit(access_token=fa.access_token['access_token'])
     print(json.dumps(f.profile, indent=2))
 
-    sleep = f.get_sleep(date(2017, 4, 8))
-    print(json.dumps(sleep, indent=2))
+    sleep = []
+    start = date(2017, 1, 1)
+    dt = timedelta(days=90)
+    while 1:
+        n = start + dt
+        s = f.get_sleep_range(start, n)
+        sleep.extend(s)
+        start = n
+        if n > date.today():
+            break
+
+    with open('sleep.json', 'w') as f:
+        f.write(json.dumps(sleep, indent=2))
+    # print(json.dumps(sleep, indent=2))
 
 
 
