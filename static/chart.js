@@ -12,7 +12,8 @@ SLEEP_COLORS = {
 
 function date(x) {
     return new Date(x.date);
-}
+};
+
 function hours(x) {
     d = new Date(x.dateTime + 'Z');
     var o = d.getUTCDate() == (new Date(x.date)).getUTCDate() ? 0 : -24;
@@ -21,14 +22,15 @@ function hours(x) {
         d.getUTCMinutes() * 60 +
         d.getUTCSeconds()
     ) / 3600;
-}
+};
 
 var margin = {
-    top: 20,
-    left: 20,
+    top:    20,
+    left:   20,
     bottom: 20,
-    right: 20
-}
+    right:  20
+};
+
 var WIDTH = document.body.clientWidth;
 var HEIGHT = 1440 / 3 + margin.top + margin.bottom;
 
@@ -82,7 +84,6 @@ gy.selectAll('g.tick line')
 gx.selectAll('g.tick line')
     .attr('stroke', '#505050')
 
-
 var legend = ['light', 'deep', 'rem', 'awake', 'asleep'];
 legend.forEach(function(k, i) {
     var x = g.append('g').attr('class', 'legend');
@@ -100,8 +101,8 @@ legend.forEach(function(k, i) {
 
 
 var rects = [];
-for (var i=0; i<sleep.length; i++) {
-    var s = sleep[i];
+for (var i=0; i<data.sleep.length; i++) {
+    var s = data.sleep[i];
     for (var j=0; j<s.levels.data.length; j++) {
         var r = s.levels.data[j];
         r.date = s.dateOfSleep;
@@ -113,7 +114,6 @@ for (var i=0; i<sleep.length; i++) {
         rects.push(r);
     }
 }
-// rects = rects.slice(0, 0);
 
 var bars = g.selectAll('.bar').data(rects).enter();
 

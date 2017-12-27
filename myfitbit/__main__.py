@@ -7,7 +7,9 @@ import json
 
 logging.basicConfig(level=logging.DEBUG)
 
+import requests
 from . import Fitbit, FitbitAuth
+from .export import FitbitExport
 
 
 def main():
@@ -20,24 +22,20 @@ def main():
     )
     fa.ensure_access_token()
 
-    f = Fitbit(access_token=fa.access_token['access_token'])
-    print(json.dumps(f.profile, indent=2))
+    try:
+        f = Fitbit(access_token=fa.access_token['access_token'])
+        print(json.dumps(f.profile, indent=2))
+    except requests.exceptions.HTTPError as e:
+        print(e.response.status_code)
+        if e.response.status_code == 429:
+            print(e.response.headers)
+        raise
 
-    sleep = []
-    start = date(2017, 1, 1)
-    dt = timedelta(days=90)
-    while 1:
-        n = start + dt
-        s = f.get_sleep_range(start, n)
-        sleep.extend(s)
-        start = n
-        if n > date.today():
-            break
+    export = FitbitExport('.', f)
 
-    with open('sleep.json', 'w') as f:
-        f.write(json.dumps(sleep, indent=2))
-    # print(json.dumps(sleep, indent=2))
-
+    export.sync_sleep()
+    export.sync_heartrate_intraday()
+    return
 
 
 if __name__ == '__main__':
