@@ -25,9 +25,9 @@ function hours(x) {
 
 var margin = {
     top: 20,
-    left: 80,
-    bottom: 80,
-    right: 80
+    left: 20,
+    bottom: 20,
+    right: 20
 }
 var WIDTH = document.body.clientWidth;
 var HEIGHT = 1440 / 3 + margin.top + margin.bottom;
@@ -81,6 +81,22 @@ gy.selectAll('g.tick line')
 
 gx.selectAll('g.tick line')
     .attr('stroke', '#505050')
+
+
+var legend = ['light', 'deep', 'rem', 'awake', 'asleep'];
+legend.forEach(function(k, i) {
+    var x = g.append('g').attr('class', 'legend');
+    x.append('rect')
+        .attr('fill', SLEEP_COLORS[k])
+        .attr('height', 10)
+        .attr('width', 10)
+        .attr('x', 30 + 80 * i)
+        .attr('y', -15);
+    x.append('text')
+        .attr('x', 45 + 80 * i)
+        .attr('y', -5)
+        .text(k);
+});
 
 
 var rects = [];
