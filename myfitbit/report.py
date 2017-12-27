@@ -16,12 +16,17 @@ def make_report(data):
         script(
             raw('\nvar data = '),
             raw(json.dumps(data, indent=2, sort_keys=2)),
+            # raw(json.dumps(data)),
             raw(';\n')
         )
 
     with doc.body:
         div('Sleep')
-        div(id='chart')
+        div(id='sleep')
+
+        div('Heart Rate')
+        div(id='heartrate')
+
         script(include('static/chart.js'))
 
 
@@ -37,7 +42,7 @@ def main():
     }
 
     html = make_report(data)
-    with open('sleep.html', 'w') as f:
+    with open('report.html', 'w') as f:
         f.write(html)
 
 if __name__ == '__main__':

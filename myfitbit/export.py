@@ -113,7 +113,7 @@ class FitbitExport(object):
             data = json.load(open(filename))
             heartrate.append({
                 'date': d.isoformat(),
-                'data': compress(data),
+                'minutes': compress(data),
             })
         return heartrate
 

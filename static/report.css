@@ -8,3 +8,7 @@ g.legend text {
     fill: #000000;
     line-height: 10px;
 }
+g.legend.hr text {
+    text-align: center;
+    font-size: 10px;
+}
