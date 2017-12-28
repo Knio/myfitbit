@@ -40,7 +40,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    # parser = argparse.ArgumentParser()
-    # parser.add_argument('--username', required=True)
-    # parser.add_argument('--ask-password', required=True, action='store_true')
-    # args = parser.parse_args()

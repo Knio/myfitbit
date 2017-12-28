@@ -212,7 +212,7 @@ function heartrate_chart(heartrate) {
         var hr = heartrate[i];
         var d = new Date(hr.date);
         var x = chart.sx(d);
-        var h = chart.sy(1 / 60 - chart.day_start);
+        var h = chart.sy(1 / 60 - chart.day_start) + 1;
         for (var j=0; j<hr.minutes.length; j++) {
             var v = hr.minutes[j];
             if (v === null) { continue; }
