@@ -86,7 +86,6 @@ class FitbitAuth(object):
         if os.path.isfile(self.ACCESS_TOKEN_FILE):
             self.access_token = json.load(open(self.ACCESS_TOKEN_FILE))
             return
-        self.get_auth_code()
         self.access_token = self.get_access_token()
         with open(self.ACCESS_TOKEN_FILE, 'w') as f:
             json.dump(self.access_token, f, sort_keys=True, indent=2)
