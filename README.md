@@ -25,12 +25,12 @@ The app should look like this:
 
 The Callback URL must be exactly `http://localhost:8189/auth_code`
 
-![Fitbit App](docs/fitbit_app.png=271x606)
+<img src="docs/fitbit_app.png" width="271" height="606">
 
 
 2. Configure the API keys
 
-Make a file `config.ini` in your working directory with the client ID and secret you got from registering the fitbit app:
+Make a file `myfitbit.ini` in your working directory with the client ID and secret you got from registering the fitbit app:
 
 ```
 [fitbit_auth]
