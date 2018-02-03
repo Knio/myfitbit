@@ -1,0 +1,14 @@
+@import url('https://rsms.me/inter/inter-ui.css');
+
+html, body {
+    font-family: 'Inter UI', sans-serif;
+}
+
+g.legend text {
+    fill: #000000;
+    line-height: 10px;
+}
+g.legend.hr text {
+    text-align: center;
+    font-size: 10px;
+}

@@ -94,6 +94,8 @@ class FitbitExport(object):
             for file in files:
                 filename = os.path.join(dir, file)
                 data = json.load(open(filename))
+                if not data:
+                    continue
                 sleep.extend(data)
         return sleep
 
@@ -111,6 +113,8 @@ class FitbitExport(object):
             if not os.path.isfile(filename):
                 continue
             data = json.load(open(filename))
+            if not data:
+                continue
             heartrate.append({
                 'date': d.isoformat(),
                 'minutes': compress(data),
