@@ -1,16 +1,15 @@
-from datetime import date, timedelta
 import argparse
 import configparser
 import getpass
 import logging
 import json
 
-logging.basicConfig(level=logging.DEBUG)
-
 import requests
+
 from . import Fitbit, FitbitAuth
 from .export import FitbitExport
 
+logging.basicConfig(level=logging.DEBUG)
 
 def main():
     config = configparser.ConfigParser()
@@ -29,13 +28,13 @@ def main():
         print(e.response.status_code)
         if e.response.status_code == 429:
             print(e.response.headers)
+            return
         raise
 
     export = FitbitExport('.', f)
 
     export.sync_sleep()
     export.sync_heartrate_intraday()
-    return
 
 
 if __name__ == '__main__':

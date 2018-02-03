@@ -25,7 +25,7 @@ The app should look like this:
 
 The Callback URL must be exactly `http://localhost:8189/`
 
-![Fitbit App](docs/fitbit_app.png)
+![Fitbit App](docs/fitbit_app.png =271×606)
 
 
 2. Configure the API keys
