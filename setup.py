@@ -7,20 +7,6 @@ _version = imp.load_source("myfitbit._version", "myfitbit/_version.py")
 
 long_description = open('README.md').read()
 
-# PyPI only supports (an old version of?) ReST.
-# Doesn't seem to be compatable with Pandoc. Shame on you.
-
-# try:
-#   import pypandoc
-#   long_description = pypandoc.convert(
-#     long_description, 'rst', format='markdown_github')
-#   with open('README.rst', 'w') as f:
-#     f.write(long_description)
-# except:
-#   import traceback
-#   traceback.print_exc()
-
-
 setup(
   name    = 'myfitbit',
   version = _version.__version__,
@@ -29,29 +15,34 @@ setup(
   license = 'LICENSE.txt',
   url     = 'http://github.com/Knio/myfitbit/',
 
-  description      = 'myfitbit - ',
+  description      = 'export fitbit data',
   long_description = long_description,
-  keywords         = 'framework templating template html xhtml python html5',
+  keywords         = 'fitbit data export json',
 
   classifiers = [
+    'Environment :: Console',
     'Intended Audience :: Developers',
-    'License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)',
+    'Intended Audience :: Healthcare Industry',
+    'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
     'Operating System :: OS Independent',
-    'Programming Language :: Python',
     'Programming Language :: Python :: 3',
     'Programming Language :: Python :: 3.3',
     'Programming Language :: Python :: 3.4',
     'Programming Language :: Python :: 3.5',
     'Programming Language :: Python :: Implementation :: PyPy',
-    'Topic :: Internet :: WWW/HTTP',
+    'Programming Language :: Python',
+    'Topic :: Scientific/Engineering :: Medical Science Apps.',
+    'Topic :: Scientific/Engineering :: Visualization',
     'Topic :: Software Development :: Libraries :: Python Modules',
+    'Topic :: System :: Archiving',
+    'Topic :: Utilities',
   ],
 
   packages = ['myfitbit'],
-  include_package_data = True,
+  include_package_data = False,
 
   install_requires = [
     'requests',
-    'beautifulsoup4',
+    'dominate',
   ],
 )
