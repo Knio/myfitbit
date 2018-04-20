@@ -34,6 +34,7 @@ def main():
     export = FitbitExport('.', f)
 
     export.sync_sleep()
+    export.sync_weight()
     export.sync_heartrate_intraday()
 
 

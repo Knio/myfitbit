@@ -132,6 +132,12 @@ class Fitbit(object):
         r.raise_for_status()
         return json.loads(r.text)['sleep']
 
+    def get_weight_range(self, date_start, date_end):
+        r = self.session.get('https://api.fitbit.com/1/user/{}/body/log/weight/date/{}/{}.json'
+            .format(self.user_id, str(date_start), str(date_end)))
+        r.raise_for_status()
+        return json.loads(r.text)['weight']
+
     def get_sleep_range(self, date_start, date_end):
         r = self.session.get('https://api.fitbit.com/1.2/user/{}/sleep/date/{}/{}.json'
             .format(self.user_id, str(date_start), str(date_end)))
