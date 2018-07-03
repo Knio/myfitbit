@@ -132,21 +132,29 @@ class Fitbit(object):
         r.raise_for_status()
         return json.loads(r.text)['sleep']
 
+    def get_heartrate_intraday(self, date):
+        r = self.session.get('https://api.fitbit.com/1/user/-/activities/heart/date/{}/{}/1min.json'
+            .format(str(date), str(date)))
+        r.raise_for_status()
+        return json.loads(r.text)['activities-heart-intraday']['dataset']
+
+    def get_activities(self, date):
+        r = self.session.get('https://api.fitbit.com/1/user/-/activities/date/{}.json'
+            .format(str(date)))
+        r.raise_for_status()
+        return json.loads(r.text)
+
     def get_sleep_range(self, date_start, date_end):
         r = self.session.get('https://api.fitbit.com/1.2/user/{}/sleep/date/{}/{}.json'
             .format(self.user_id, str(date_start), str(date_end)))
         r.raise_for_status()
         return json.loads(r.text)['sleep']
 
-    def get_heartrate_intraday(self, date):
-        r = self.session.get('https://api.fitbit.com/1/user/-/activities/heart/date/{}/{}/1min.json'
-            .format(
-                str(date),
-                str(date)
-            )
-        )
+    def get_heartrate_range(self, date_start, date_end):
+        r = self.session.get('https://api.fitbit.com/1/user/-/activities/heart/date/{}/{}.json'
+            .format(str(date_start), str(date_end)))
         r.raise_for_status()
-        return json.loads(r.text)['activities-heart-intraday']['dataset']
+        return json.loads(r.text)['activities-heart']
 
     def get_steps(self):
         raise NotImplementedError
