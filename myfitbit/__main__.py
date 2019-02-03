@@ -6,37 +6,41 @@ import json
 
 import requests
 
-from . import Fitbit, FitbitAuth
-from .export import FitbitExport
+from . import FitbitClient, FitbitAuth
+from . import FitbitDatastore
 
-logging.basicConfig(level=logging.DEBUG)
 
 def main():
+    logging.basicConfig(level=logging.DEBUG)
+
     config = configparser.ConfigParser()
     config.read('myfitbit.ini')
+    auth = config['fitbit_auth']
 
     fa = FitbitAuth(
-        client_id=config['fitbit_auth']['client_id'],
-        client_secret=config['fitbit_auth']['client_secret'],
+        client_id=auth['client_id'],
+        client_secret=auth['client_secret'],
+        access_token_file=auth['access_token_file'] + '_' + auth['client_id']
     )
-    fa.ensure_access_token()
+    access_token = fa.ensure_access_token()
 
     try:
-        f = Fitbit(access_token=fa.access_token['access_token'])
-        print(json.dumps(f.profile, indent=2))
+        f = FitbitClient(access_token=access_token)
+        logging.info(json.dumps(f.profile, indent=2))
     except requests.exceptions.HTTPError as e:
-        print(e.response.status_code)
+        logging.info(e.response.status_code)
         if e.response.status_code == 429:
-            print(e.response.headers)
+            logging.info(e.response.headers)
+            # TODO sleep automatically here
             return
         raise
 
-    export = FitbitExport('.', f)
+    data = FitbitDatastore('.', f)
 
-    export.sync_sleep()
-    export.sync_heartrate()
-    export.sync_heartrate_intraday()
-    export.sync_activities()
+    data.sync_sleep()
+    data.sync_heartrate()
+    data.sync_heartrate_intraday()
+    data.sync_activities()
 
 
 if __name__ == '__main__':

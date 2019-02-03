@@ -6,10 +6,11 @@ from datetime import date, time, timedelta
 
 log = logging.getLogger(__name__)
 
-class FitbitExport(object):
+class FitbitDatastore(object):
     '''
     Local data store of Fitbit json objects.
     '''
+    # TODO store profile
     def __init__(self, root, client=None, user_id=None):
         self.root = os.path.abspath(root)
         self.client = client
@@ -31,7 +32,7 @@ class FitbitExport(object):
         Downloads date-range time series data from
         the FitBit API to the local data store.
         '''
-        month = 2015 * 12
+        month = 2015 * 12 # TODO use profile['memberSince']
         while 1:
             date_start = date(month // 12, month % 12 + 1, 1)
             month += 1
@@ -81,6 +82,7 @@ class FitbitExport(object):
         self.sync_ranged_data('heartrate', self.client.get_heartrate_range)
 
     def day_filenames(self, name):
+        # TODO use profile['memberSince']
         start = date(2017, 1, 1)
         days = 0
         while 1:
@@ -177,4 +179,3 @@ class FitbitExport(object):
                 'minutes': compress(data),
             })
         return heartrate
-
