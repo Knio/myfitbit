@@ -4,11 +4,24 @@ Because *"Your data belongs to you!"*
 
 ...and fitbit's own data export sucks.
 
+[![Build Status](https://travis-ci.org/Knio/myfitbit.png?branch=master)](https://travis-ci.org/Knio/myfitbit)
+[![Coverage Status](https://coveralls.io/repos/Knio/myfitbit/badge.png?branch=master)](https://coveralls.io/r/Knio/myfitbit?branch=master)
+[![Code Health](https://landscape.io/github/Knio/myfitbit/master/landscape.svg?style=flat)](https://landscape.io/github/Knio/myfitbit/master)
+
 
 ## Installation
 
 
-Manual:
+The recommended way to install `myfitbit` is with
+[`pip`](http://pypi.python.org/pypi/pip/):
+
+    sudo pip install myfitbit
+
+[![PyPI version](https://badge.fury.io/py/myfitbit.svg)](http://badge.fury.io/py/myfitbit)
+
+
+
+Manual installation:
 
 ```sh
 git clone git@github.com:Knio/myfitbit
@@ -36,6 +49,7 @@ Make a file `myfitbit.ini` in your working directory with the client ID and secr
 [fitbit_auth]
 client_id = 123ABCD
 client_secret = 0123456789abcdef0a1b2c3d4f5
+access_token_file = .myfitbit_access_token
 ```
 
 

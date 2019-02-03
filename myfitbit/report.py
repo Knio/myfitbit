@@ -35,8 +35,8 @@ def make_report(data):
 
 
 def main(user_id):
-    from . import export
-    ex = export.FitbitExport('.', user_id=user_id)
+    from . import datastore
+    ex = datadtore.FitbitDatastore('.', user_id=user_id)
     data = {
         'sleep': ex.get_sleep(),
         'heartrate': ex.get_heartrate_intraday(),
