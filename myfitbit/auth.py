@@ -1,8 +1,17 @@
-import os
+import base64
+import http.server
 import json
+import logging
+import os
 import time
 
+import requests
+
+
 __all__ = ['FitbitAuth']
+
+log = logging.getLogger(__name__)
+
 
 class RedirectServer(object):
     IP = '127.0.0.1'

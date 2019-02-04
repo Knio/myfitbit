@@ -1,4 +1,3 @@
-import base64
 import re
 import os
 import json
@@ -8,7 +7,6 @@ import urllib.parse
 import webbrowser
 
 import requests
-import http.server
 
 
 __all__ = ['FitbitClient']
