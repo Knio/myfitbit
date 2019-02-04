@@ -1,4 +1,3 @@
-
 import os
 import json
 import logging
@@ -10,15 +9,11 @@ class FitbitDatastore(object):
     '''
     Local data store of Fitbit json objects.
     '''
-    # TODO store profile
-    def __init__(self, root, client=None, user_id=None):
+    def __init__(self, root):
         self.root = os.path.abspath(root)
-        self.client = client
-        self.user_id = user_id
 
     def filename(self, *args):
-        u = self.client and self.client.user_id or self.user_id
-        return os.path.join(self.root, u, *args)
+        return os.path.join(self.root, *args)
 
     @staticmethod
     def write(filename, data):
@@ -27,108 +22,33 @@ class FitbitDatastore(object):
         with open(filename, 'w') as f:
             f.write(json.dumps(data, indent=2, sort_keys=True))
 
-    def sync_ranged_data(self, name, client_fn):
-        '''
-        Downloads date-range time series data from
-        the FitBit API to the local data store.
-        '''
-        month = 2015 * 12 # TODO use profile['memberSince']
-        while 1:
-            date_start = date(month // 12, month % 12 + 1, 1)
-            month += 1
-            date_end =   date(month // 12, month % 12 + 1, 1)
-
-            if date_start > date.today():
-                break
-
-            partial = date_end > date.today()
-            partial_filename = self.filename(name, '{}.{:04d}.{:02d}.partial.json'.format(
-                name,
-                date_start.year,
-                date_start.month,
-            ))
-            filename = self.filename(name, '{}.{:04d}.{:02}.json'.format(
-                name,
-                date_start.year,
-                date_start.month,
-            ))
-
-            if os.path.isfile(partial_filename):
-                os.remove(partial_filename)
-
-            if partial:
-                filename = partial_filename
-            elif os.path.isfile(filename):
-                log.info('Cached: %s', filename)
-                continue
-
-            log.info('Downloading: %s', filename)
-            data = client_fn(
-                date_start,
-                date_end - timedelta(days=1)
-            )
-            self.write(filename, data)
-
-    def sync_sleep(self):
-        '''
-        Downloads sleep data from the FitBit API to the local data store
-        '''
-        self.sync_ranged_data('sleep', self.client.get_sleep_range)
-
-    def sync_heartrate(self):
-        '''
-        Downloads heartrate data from the FitBit API to the local data store
-        '''
-        self.sync_ranged_data('heartrate', self.client.get_heartrate_range)
+    @staticmethod
+    def read(filename):
+        return json.load(open(filename))
 
     def day_filenames(self, name):
         # TODO use profile['memberSince']
         start = date(2017, 1, 1)
         days = 0
         while 1:
-            d = start + timedelta(days=days)
+            day = start + timedelta(days=days)
             days += 1
-            if d == date.today():
+            if day == date.today():
                 return
 
             filename = self.filename(
                 name,
-                '{:04d}'.format(d.year),
+                '{:04d}'.format(day.year),
                 '{}.{:04d}.{:02d}.{:02d}.json'.format(
                     name,
-                    d.year,
-                    d.month,
-                    d.day
+                    day.year,
+                    day.month,
+                    day.day
             ))
-            yield d, filename
+            yield day, filename
 
-    def sync_heartrate_intraday(self):
-        '''
-        Downloads heartrate intraday data from the FitBit API
-        to the local data store
-        '''
-        for d, filename in self.day_filenames('heartrate_intraday'):
-            if os.path.isfile(filename):
-                log.info('Cached: %s', filename)
-                continue
-
-            log.info('Downloading: %s', filename)
-            hr = self.client.get_heartrate_intraday(d)
-            self.write(filename, hr)
-
-    def sync_activities(self):
-        '''
-        Downloads daily activities data from the FitBit API
-        to the local data store
-        '''
-        for d, filename in self.day_filenames('activities'):
-            if os.path.isfile(filename):
-                log.info('Cached: %s', filename)
-                continue
-
-            log.info('Downloading: %s', filename)
-            hr = self.client.get_activities(d)
-            self.write(filename, hr)
+    def get_proile(self):
+        return self.read(self.filename('profile.json'))
 
     def get_sleep(self):
         '''
@@ -137,15 +57,24 @@ class FitbitDatastore(object):
         where `sleep_data` is the inner dict from
         https://dev.fitbit.com/build/reference/web-api/sleep/
         '''
-        sleep = []
         for dir, dirs, files in os.walk(self.filename('sleep')):
             for file in files:
                 filename = os.path.join(dir, file)
-                data = json.load(open(filename))
-                if not data:
-                    continue
-                sleep.extend(data)
-        return sleep
+                data = self.read(filename)
+                yield from data
+
+    def get_activities(self):
+        '''
+        Return activities data from the local store.
+        Yeilds: (day, {activities_data})
+        where `activities_data` is the inner dict from
+        https://dev.fitbit.com/build/reference/web-api/activity/
+        '''
+        for day, filename in self.day_filenames('activities'):
+            if not os.path.isfile(filename):
+                continue
+            data = self.read(filename)
+            yield day, data
 
     def get_heartrate_intraday(self):
         '''
@@ -167,15 +96,13 @@ class FitbitDatastore(object):
                 minutes[i] = o['value']
             return minutes
 
-        heartrate = []
         for d, filename in self.day_filenames('heartrate_intraday'):
             if not os.path.isfile(filename):
                 continue
-            data = json.load(open(filename))
+            data = self.read(filename)
             if not data:
                 continue
-            heartrate.append({
+            yield {
                 'date': d.isoformat(),
                 'minutes': compress(data),
-            })
-        return heartrate
+            }

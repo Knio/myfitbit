@@ -6,7 +6,6 @@ Because *"Your data belongs to you!"*
 
 [![Build Status](https://travis-ci.org/Knio/myfitbit.png?branch=master)](https://travis-ci.org/Knio/myfitbit)
 [![Coverage Status](https://coveralls.io/repos/Knio/myfitbit/badge.png?branch=master)](https://coveralls.io/r/Knio/myfitbit?branch=master)
-[![Code Health](https://landscape.io/github/Knio/myfitbit/master/landscape.svg?style=flat)](https://landscape.io/github/Knio/myfitbit/master)
 
 
 ## Installation

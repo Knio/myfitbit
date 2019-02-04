@@ -7,7 +7,7 @@ import json
 import requests
 
 from . import FitbitClient, FitbitAuth
-from . import FitbitDatastore
+from . import FitbitDatastore, FitbitSync
 
 
 def main():
@@ -25,8 +25,11 @@ def main():
     access_token = fa.ensure_access_token()
 
     try:
-        f = FitbitClient(access_token=access_token)
-        logging.info(json.dumps(f.profile, indent=2))
+        client = FitbitClient(access_token=access_token)
+        logging.info(json.dumps(client.profile, indent=2))
+        data = FitbitDatastore(client.user_id)
+        FitbitSync(data, client).sync()
+
     except requests.exceptions.HTTPError as e:
         logging.info(e.response.status_code)
         if e.response.status_code == 429:
@@ -35,12 +38,6 @@ def main():
             return
         raise
 
-    data = FitbitDatastore('.', f)
-
-    data.sync_sleep()
-    data.sync_heartrate()
-    data.sync_heartrate_intraday()
-    data.sync_activities()
 
 
 if __name__ == '__main__':
