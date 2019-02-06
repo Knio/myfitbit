@@ -4,8 +4,9 @@ Because *"Your data belongs to you!"*
 
 ...and fitbit's own data export sucks.
 
-[![Build Status](https://travis-ci.org/Knio/myfitbit.png?branch=master)](https://travis-ci.org/Knio/myfitbit)
-[![Coverage Status](https://coveralls.io/repos/Knio/myfitbit/badge.png?branch=master)](https://coveralls.io/r/Knio/myfitbit?branch=master)
+![Python version](https://img.shields.io/pypi/pyversions/myfitbit.svg?style=flat)
+[![Build status](https://img.shields.io/travis/Knio/myfitbit/master.svg?style=flat)](https://travis-ci.org/Knio/myfitbit)
+[![Coverage status](https://img.shields.io/coveralls/github/Knio/myfitbit/master.svg?style=flat)](https://coveralls.io/r/Knio/myfitbit?branch=master)
 
 
 ## Installation
@@ -16,8 +17,8 @@ The recommended way to install `myfitbit` is with
 
     sudo pip install myfitbit
 
-[![PyPI version](https://badge.fury.io/py/myfitbit.svg)](http://badge.fury.io/py/myfitbit)
-
+[![PyPI version](https://img.shields.io/pypi/v/myfitbit.svg?style=flat)](https://pypi.org/project/myfitbit/)
+[![PyPI downloads](https://img.shields.io/pypi/dm/myfitbit.svg?style=flat)](https://pypi.org/project/myfitbit/)
 
 
 Manual installation:
