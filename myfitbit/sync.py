@@ -18,6 +18,7 @@ class FitbitSync(object):
         self.sync_profile()
         self.sync_sleep()
         self.sync_heartrate()
+        self.sync_weight()
         self.sync_heartrate_intraday()
         self.sync_activities()
 
@@ -74,6 +75,9 @@ class FitbitSync(object):
 
     def sync_heartrate(self):
         self.sync_ranged_data('heartrate', self.client.get_heartrate_range)
+
+    def sync_weight(self):
+        self.sync_ranged_data('weight', self.client.get_weight_range)
 
     def sync_intraday_data(self, name, client_fn):
         '''

@@ -62,5 +62,11 @@ class FitbitClient(object):
         r.raise_for_status()
         return json.loads(r.text)
 
+    def get_weight_range(self, date_start, date_end):
+        r = self.session.get('https://api.fitbit.com/1/user/-/body/log/weight/date/{}/{}.json'
+            .format(str(date_start), str(date_end)))
+        r.raise_for_status()
+        return json.loads(r.text)['weight']
+
     def get_steps(self):
         raise NotImplementedError

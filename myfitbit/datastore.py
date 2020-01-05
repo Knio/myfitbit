@@ -53,7 +53,7 @@ class FitbitDatastore(object):
     def get_sleep(self):
         '''
         Return sleep data from the local store.
-        Returns: [{sleep_data}, ...]
+        Yeilds: {sleep_data}, ...
         where `sleep_data` is the inner dict from
         https://dev.fitbit.com/build/reference/web-api/sleep/
         '''
@@ -75,6 +75,20 @@ class FitbitDatastore(object):
                 continue
             data = self.read(filename)
             yield day, data
+
+    def get_weight(self):
+        '''
+        Return weight logs from the local store.
+        Yeilds: {weight_data}, ...
+        where `weight_data` is the inner dict from
+        https://dev.fitbit.com/build/reference/web-api/body/#weight
+        '''
+        for dir, dirs, files in os.walk(self.filename('weight')):
+            for file in files:
+                filename = os.path.join(dir, file)
+                data = self.read(filename)
+                yield from data
+
 
     def get_heartrate_intraday(self):
         '''
