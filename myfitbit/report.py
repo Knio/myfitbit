@@ -1,10 +1,13 @@
 import json
+import logging
 import pkg_resources
 import sys
 
 import dominate
 from dominate.tags import *
 from dominate.util import *
+
+log = logging.getLogger('myfitbit.report')
 
 def read_resource(name):
     return pkg_resources.resource_string('myfitbit', name).decode('utf-8')
@@ -34,21 +37,26 @@ def make_report(data):
     return doc.render()
 
 
-def main(user_id):
+def main():
+    import argparse
     from . import datastore
-    ex = datadtore.FitbitDatastore('.', user_id=user_id)
+    parser = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawTextHelpFormatter
+    )
+    parser.add_argument('--data-dir', required=True)
+    args = parser.parse_args()
+    ex = datastore.FitbitDatastore(args.data_dir)
     data = {
-        'sleep': ex.get_sleep(),
-        'heartrate': ex.get_heartrate_intraday(),
+        'sleep': list(ex.get_sleep()),
+        'heartrate': list(ex.get_heartrate_intraday()),
     }
     html = make_report(data)
     with open('report.html', 'w') as f:
         f.write(html)
-    print('Wrote report.html', file=sys.stderr)
+    log.info('Wrote report.html', file=sys.stderr)
+
 
 if __name__ == '__main__':
-    import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--user', required=True)
-    args = parser.parse_args()
-    main(args.user)
+    logging.basicConfig(level=logging.WARN)
+    main()
+
