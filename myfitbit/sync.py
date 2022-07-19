@@ -33,7 +33,7 @@ class FitbitSync(object):
         the FitBit API to the local data store, one month at a time
         '''
         fn = self.datastore.filename
-        month = 2015 * 12 # TODO use profile['memberSince']
+        month = 2010 * 12 # TODO use profile['memberSince']
         while 1:
             date_start = date(month // 12, month % 12 + 1, 1)
             month += 1
